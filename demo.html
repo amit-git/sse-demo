@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Server-Sent Events to Guage demo</title>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="http://code.highcharts.com/highcharts-more.js"></script>
+  <script src="http://code.highcharts.com/modules/exporting.js"></script>
+  <script src="draw-guage.js"></script>
+
+  <script>
+    $(function() {
+      var source = new EventSource('/stream');
+      source.onopen = function () {
+        console.log("Connection opened with /stream");
+      };
+
+      source.onerror = function () {
+        console.log("Connection ERROR with /stream");
+      };
+
+      source.onmessage = function (event) {
+        $(window).trigger('UpdateRPS', event.data);
+      };
+    });
+
+
+
+  </script>
+</head>
+<body>
+<div id="container" style="min-width: 310px; max-width: 400px; height: 300px; margin: 0 auto"></div>
+</body>
+</html>
+
